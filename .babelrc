@@ -1,0 +1,20 @@
+{
+  "presets": [
+    "env",
+    "es2015",
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    [
+      "import", 
+      { "libraryName": "antd", "libraryDirectory": "es", "style": "css" },
+      "syntax-flow",
+      "transform-flow-strip-types",
+      "transform-class-properties",
+      "transform-es2015-arrow-functions",
+      "babel-plugin-syntax-jsx",
+      "react-hot-loader/babel"
+    ]
+  ]
+}
