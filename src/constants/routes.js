@@ -4,3 +4,5 @@ export const LANDING = '/';
 export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const PASSWORD_FORGET = '/forgotten-password';
+export const FACULTIES = '/faculties';
+export const COURSES = '/courses';
