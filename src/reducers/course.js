@@ -1,15 +1,15 @@
 const INITIAL_STATE = {
-  courses: {}
+  courses: {},
 };
 
 const loadCourses = (state, action) => ({
   ...state,
-  courses: action.courses
+  courses: action.courses,
 });
 
 function courseReducer(state = INITIAL_STATE, action) {
-  switch(action.type) {
-    case 'LOADING_COURSES': 
+  switch (action.type) {
+    case 'LOADING_COURSES':
       return loadCourses(state, action);
     default:
       return state;

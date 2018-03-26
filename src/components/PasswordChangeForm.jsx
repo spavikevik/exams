@@ -26,7 +26,7 @@ class PasswordChangeForm extends Component {
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState(byPropKey('error', error));
       });
 

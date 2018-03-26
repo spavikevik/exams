@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 
 const PasswordForget = () =>
-  <div>
-    <h1>PasswordForget</h1>
-    <PasswordForgetForm />
-  </div>
+  (
+    <div>
+      <h1>PasswordForget</h1>
+      <PasswordForgetForm />
+    </div>
+  );
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
@@ -32,7 +34,7 @@ class PasswordForgetForm extends Component {
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState(byPropKey('error', error));
       });
 
@@ -66,9 +68,11 @@ class PasswordForgetForm extends Component {
 }
 
 const PasswordForgetLink = () =>
-  <p>
-    <Link to="/forgotten-password">Forgot Password?</Link>
-  </p>
+  (
+    <p>
+      <Link to="/forgotten-password">Forgot Password?</Link>
+    </p>
+  );
 
 export default PasswordForget;
 

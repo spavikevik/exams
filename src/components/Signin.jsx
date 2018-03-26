@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { PasswordForgetLink } from './PasswordForget';
@@ -6,13 +7,19 @@ import { SignupLink } from './Signup';
 import { auth } from '../firebase';
 import * as routes from '../constants/routes';
 
+const propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
+};
+
 const Signin = ({ history }) =>
-  <div>
-    <h1>Signin</h1>
-    <SigninForm history={history} />
-    <PasswordForgetLink />
-    <SignupLink />
-  </div>
+  (
+    <div>
+      <h1>Signin</h1>
+      <SigninForm history={history} />
+      <PasswordForgetLink />
+      <SignupLink />
+    </div>
+  );
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
@@ -25,6 +32,10 @@ const INITIAL_STATE = {
 };
 
 class SigninForm extends Component {
+  static propTypes = {
+    history: ReactRouterPropTypes.history.isRequired,
+  }
+
   constructor(props) {
     super(props);
 
@@ -46,7 +57,7 @@ class SigninForm extends Component {
         this.setState(() => ({ ...INITIAL_STATE }));
         history.push(routes.HOME);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState(byPropKey('error', error));
       });
 
@@ -88,8 +99,8 @@ class SigninForm extends Component {
   }
 }
 
+Signin.propTypes = propTypes;
+
 export default withRouter(Signin);
 
-export {
-  SigninForm,
-};
+export { SigninForm };

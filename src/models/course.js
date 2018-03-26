@@ -5,7 +5,7 @@ const CourseRecord = Record({
   name: '',
   code: '',
   semester: 0,
-  year: 0
+  year: 0,
 });
 
 export default class Course extends CourseRecord {}

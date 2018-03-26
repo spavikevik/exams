@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { connect } from 'react-redux';
 import { Menu } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 
-import Signout from './Signout';
+// import Signout from './Signout';
 import * as routes from '../constants/routes';
+import User from '../models/user';
 
-class Navigation extends React.Component {
+class Navigation extends Component {
+  static propTypes = {
+    history: ReactRouterPropTypes.history.isRequired,
+    authUser: PropTypes.instanceOf(User).isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.onItemClick.bind(this);
@@ -18,9 +26,9 @@ class Navigation extends React.Component {
 
   onItemClick(path) {
     return (e, { name }) => {
-     this.setState({ activeItem: name });
-     this.props.history.push(path);
-    }
+      this.setState({ activeItem: name });
+      this.props.history.push(path);
+    };
   }
 
   authenticated(activeItem) {
@@ -42,18 +50,18 @@ class Navigation extends React.Component {
       </Menu>
     );
   }
-  
+
   render() {
     const { authUser } = this.props;
     const { activeItem } = this.state;
     return (
-      authUser ? this.authenticated(activeItem) 
-      : this.nonAuthenticated(activeItem)
+      authUser ? this.authenticated(activeItem)
+        : this.nonAuthenticated(activeItem)
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   authUser: state.sessionState.authUser,
 });
 
