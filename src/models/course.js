@@ -8,4 +8,10 @@ const CourseRecord = Record({
   year: 0,
 });
 
-export default class Course extends CourseRecord {}
+export default class Course extends CourseRecord {
+  static fromObject(key, course) {
+    return new this(course).merge({
+      id: key,
+    });
+  }
+}

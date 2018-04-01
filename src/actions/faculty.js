@@ -8,6 +8,13 @@ export function onFetchFaculties(faculties) {
 export function createFaculty(faculty) {
   return {
     type: 'CREATING_FACULTY',
-    faculty,
+    payload: { faculty },
+  };
+}
+
+export function updateFaculty(id, fields) {
+  return {
+    type: 'UPDATING_FACULTY',
+    payload: { id, fields },
   };
 }

@@ -33,18 +33,18 @@ class Navigation extends Component {
 
   authenticated(activeItem) {
     return (
-      <Menu>
-        <Menu.Item name="signin" active={activeItem === 'signin'} onClick={this.onItemClick(routes.SIGN_IN)} />
+      <Menu color="blue" pointing secondary>
         <Menu.Item name="landing" active={activeItem === 'lading'} onClick={this.onItemClick(routes.LANDING)} />
         <Menu.Item name="home" active={activeItem === 'home'} onClick={this.onItemClick(routes.HOME)} />
         <Menu.Item name="account" active={activeItem === 'account'} onClick={this.onItemClick(routes.ACCOUNT)} />
+        <Menu.Item name="dashboard" active={activeItem === 'dashboard'} onClick={this.onItemClick(routes.ADMIN)} />
       </Menu>
     );
   }
 
   nonAuthenticated(activeItem) {
     return (
-      <Menu>
+      <Menu color="blue" pointing secondary>
         <Menu.Item name="landing" active={activeItem === 'lading'} onClick={this.onItemClick(routes.LANDING)} />
         <Menu.Item name="signin" active={activeItem === 'signin'} onClick={this.onItemClick(routes.SIGN_IN)} />
       </Menu>

@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Button, Form, Table } from 'semantic-ui-react';
 import { List } from 'immutable';
 
-import { createCourse, onceGetCourses } from '../firebase/db';
-
-class Courses extends React.Component {
+export default class Courses extends React.Component {
   static propTypes = {
-    onFetchCourses: PropTypes.func.isRequired,
     courses: PropTypes.instanceOf(List).isRequired,
+    createCourse: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -19,16 +16,11 @@ class Courses extends React.Component {
       code: '',
       semester: '',
       year: '',
+      secretKey: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
     this.newCourseForm = this.newCourseForm.bind(this);
-  }
-
-  componentWillMount() {
-    const { onFetchCourses } = this.props;
-
-    onceGetCourses().then(snapshot => onFetchCourses(snapshot.val()));
   }
 
   handleChange(e, { name, value }) {
@@ -36,27 +28,55 @@ class Courses extends React.Component {
   }
 
   saveCourse() {
-    const {
-      name, code, semester, year,
-    } = this.state;
-    createCourse(name, code, semester, year);
+    this.props.createCourse(this.state);
   }
 
-  newCourseForm(name, code, semester, year) {
+  newCourseForm(name, code, semester, year, secretKey) {
     return (
       <Form onSubmit={this.saveCourse}>
-        <Form.Input placeholder="Mathematics 1" name="name" value={name} onChange={this.handleChange} />
-        <Form.Input placeholder="MAT001" name="code" value={code} onChange={this.handleChange} />
-        <Form.Input placeholder="winter" name="semester" value={semester} onChange={this.handleChange} />
-        <Form.Input placeholder="2018" name="year" value={year} onChange={this.handleChange} />
-        <Button type="submit">Save</Button>
+        <Form.Input
+          label="Course name"
+          placeholder="Mathematics 1"
+          name="name"
+          value={name}
+          onChange={this.handleChange}
+        />
+        <Form.Input
+          label="Code name"
+          placeholder="MAT001"
+          name="code"
+          value={code}
+          onChange={this.handleChange}
+        />
+        <Form.Input
+          label="Semester"
+          placeholder="Winter"
+          name="semester"
+          value={semester}
+          onChange={this.handleChange}
+        />
+        <Form.Input
+          label="Study year"
+          placeholder="2018"
+          name="year"
+          value={year}
+          onChange={this.handleChange}
+        />
+        <Form.Input
+          label="Enrollment key"
+          placeholder="Input a secret key here"
+          name="secretKey"
+          value={secretKey}
+          onChange={this.handleChange}
+        />
+        <Button positive type="submit">Create</Button>
       </Form>
     );
   }
 
   render() {
     const {
-      name, code, semester, year,
+      name, code, semester, year, secretKey,
     } = this.state;
     const { courses } = this.props;
     return (
@@ -69,29 +89,19 @@ class Courses extends React.Component {
               <Table.HeaderCell>Semester</Table.HeaderCell>
               <Table.HeaderCell>Year</Table.HeaderCell>
             </Table.Row>
-            {Object.keys(courses).map(key =>
+            {courses.map(course =>
               (
                 <Table.Row>
-                  <Table.Cell>{courses[key].name}</Table.Cell>
-                  <Table.Cell>{courses[key].code}</Table.Cell>
-                  <Table.Cell>{courses[key].semester}</Table.Cell>
-                  <Table.Cell>{courses[key].year}</Table.Cell>
+                  <Table.Cell>{course.name}</Table.Cell>
+                  <Table.Cell>{course.code}</Table.Cell>
+                  <Table.Cell>{course.semester}</Table.Cell>
+                  <Table.Cell>{course.year}</Table.Cell>
                 </Table.Row>
               ))}
           </Table.Header>
         </Table>
-        { this.newCourseForm(name, code, semester, year) }
+        { this.newCourseForm(name, code, semester, year, secretKey) }
       </div>
     );
   }
 }
-
-const mapStateToProps = state => ({
-  courses: state.courseState.courses,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onFetchCourses: courses => dispatch({ type: 'LOADING_COURSES', courses }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Courses);

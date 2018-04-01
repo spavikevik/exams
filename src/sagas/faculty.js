@@ -1,19 +1,7 @@
-import { take, takeLatest, call, put } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
-import { createFaculty } from '../firebase/db';
-import { db as database } from '../firebase/firebase';
-
-function createEventChannel() {
-  const listener = eventChannel((emit) => {
-    database.ref('faculties')
-      .on(
-        'child_added',
-        data => emit(data.val()),
-      );
-    return () => database.ref('faculties').off(listener);
-  });
-  return listener;
-}
+import { race, take, takeLatest, call, put } from 'redux-saga/effects';
+import { createFaculty, updateFaculty } from '../firebase/db';
+import { db } from '../firebase';
+import { databaseCreatedEventChannel, databaseUpdatedEventChannel } from '../helpers/sagaHelpers';
 
 function* createFacultySaga(action) {
   const { faculty } = action.payload;
@@ -24,14 +12,31 @@ function* createFacultySaga(action) {
   }
 }
 
-export function* watchCreateFacultySaga() {
-  yield takeLatest('CREATING_FACULTY', createFacultySaga);
+function* updateFacultySaga(action) {
+  const { id, fields } = action.payload;
+  try {
+    yield call(updateFaculty, id, fields);
+  } catch (e) {
+    // do nothing
+  }
+}
+
+export function* watchFacultySaga() {
+  yield [
+    takeLatest('CREATING_FACULTY', createFacultySaga),
+    takeLatest('UPDATING_FACULTY', updateFacultySaga),
+  ];
 }
 
 export function* updatedFacultySaga() {
-  const updateChannel = createEventChannel();
+  const createChannel = databaseCreatedEventChannel(db.facultiesRef);
+  const updateChannel = databaseUpdatedEventChannel(db.facultiesRef);
   while (true) {
-    const faculty = yield take(updateChannel);
-    yield put({ type: 'UPDATING_FACULTIES', faculty });
+    const { create, update } = yield race({
+      create: take(createChannel),
+      update: take(updateChannel),
+    });
+    const { key, item } = create || update;
+    yield put({ type: 'UPDATING_FACULTIES', key, faculty: item });
   }
 }

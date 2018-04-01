@@ -1,27 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+import { Form, Button, Grid } from 'semantic-ui-react';
 import { List } from 'immutable';
-
-import { onceGetCourses } from '../firebase/db';
+import format from 'date-fns/format';
+import DayPicker from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
 class CreateExam extends React.Component {
   static propTypes = {
-    onFetchCourses: PropTypes.func.isRequired,
     courses: PropTypes.instanceOf(List).isRequired,
+    createExam: PropTypes.func.isRequired,
+    setExamFormRef: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
+    this.examTypes = [
+      { key: 'first', value: 'first', text: 'First midterm' },
+      { key: 'second', value: 'second', text: 'Second midterm' },
+      { key: 'final', value: 'final', text: 'Final Exam' },
+    ];
     this.questionTypes = [
       { key: 'choice', value: 'choice', text: 'Multiple choice' },
       { key: 'essay', value: 'essay', text: 'Essay' },
       { key: 'short', value: 'short', text: 'Short' },
       { key: 'code', value: 'code', text: 'Code' },
     ];
+    this.examDurations = [
+      { key: 1, value: 1, text: '1 hour' },
+      { key: 1.5, value: 1.5, text: '1 hour 30 minutes' },
+      { key: 2, value: 2, text: '2 hours' },
+      { key: 2.5, value: 2.5, text: '2 hours 30 minutes' },
+      { key: 3, value: 3, text: '3 hours' },
+      { key: 3.5, value: 3.5, text: '3 hours 30 minutes' },
+    ];
     this.state = {
+      type: '',
+      date: '',
       course: '',
+      duration: '',
       questions: [
         {
           question: '',
@@ -32,12 +49,8 @@ class CreateExam extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onAddQuestion = this.onAddQuestion.bind(this);
-  }
-
-  componentWillMount() {
-    const { onFetchCourses } = this.props;
-
-    onceGetCourses().then(snapshot => onFetchCourses(snapshot.val()));
+    this.onSaveExam = this.onSaveExam.bind(this);
+    this.handleDaySelection = this.handleDaySelection.bind(this);
   }
 
   onQuestionChange(index) {
@@ -79,77 +92,140 @@ class CreateExam extends React.Component {
     };
   }
 
+  onSaveExam() {
+    this.props.createExam({
+      ...this.state,
+      date: format(this.state.date, 'YYYY/MM/DD'),
+    });
+  }
+
   handleChange(e, { name, value }) {
     this.setState({ [name]: value });
   }
 
-  render() {
-    const courseOptions = Object.keys(this.props.courses).map((key) => {
-      const { name } = this.props.courses[key];
-      return { key, value: key, text: name };
-    });
-    const { course, questions } = this.state;
-    console.log(questions);
-    return (
-      <Form>
-        <Form.Dropdown
-          name="course"
-          value={course}
-          search
-          selection
-          placeholder="Choose course"
-          options={courseOptions}
-          onChange={this.handleChange}
-        />
+  handleDaySelection(date) {
+    this.setState({ date });
+  }
 
-        {questions.map((question, index) => (
-          <Form.Group>
-            <Form.TextArea
-              name="question"
-              rows={3}
-              label="Question"
-              placeholder="What is a bit?"
-              width={12}
-              onChange={this.onQuestionChange(index)}
-            />
-            <Form.Select
-              name="type"
-              label="Type"
-              options={this.questionTypes}
-              placeholder="Essay"
-              width={4}
-              onChange={this.onQuestionChange(index)}
-            />
-            <Form.Input
-              name="answer"
-              label="Answer"
-              placeholder="A digit: 0 or 1"
-              width={10}
-              onChange={this.onQuestionChange(index)}
-            />
-            <Form.Input
-              name="points"
-              label="Points"
-              placeholder="10"
-              width={1}
-              onChange={this.onQuestionChange(index)}
-            />
-            <Button negative icon="minus" onClick={this.onRemoveQuestion(index)} disabled={questions.length === 1} />
-          </Form.Group>
-          ))}
-        <Button positive icon="add" onClick={this.onAddQuestion} />
-        <Button type="submit">Save</Button>
+  render() {
+    const { setExamFormRef } = this.props;
+    const courseOptions
+      = this.props.courses
+        .toArray()
+        .map(course => ({ key: course.id, value: course.id, text: course.name }));
+    const {
+      date,
+      duration,
+      course,
+      type,
+      questions,
+    } = this.state;
+    return (
+      <Form onSubmit={this.onSaveExam} ref={setExamFormRef}>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={4}>
+              <DayPicker
+                onDayClick={this.handleDaySelection}
+                selectedDays={date}
+              />
+              <Form.Dropdown
+                name="duration"
+                value={duration}
+                selection
+                placeholder="Exam duration"
+                options={this.examDurations}
+                onChange={this.handleChange}
+              />
+            </Grid.Column>
+            <Grid.Column width={12}>
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column width={6}>
+                    <Form.Dropdown
+                      name="course"
+                      value={course}
+                      search
+                      selection
+                      placeholder="Choose course"
+                      options={courseOptions}
+                      onChange={this.handleChange}
+                    />
+                  </Grid.Column>
+                  <Grid.Column width={6}>
+                    <Form.Dropdown
+                      name="type"
+                      value={type}
+                      selection
+                      placeholder="Type"
+                      options={this.examTypes}
+                      onChange={this.handleChange}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+
+                {questions.map((question, index) => (
+                  <Grid.Row>
+                    <Grid.Column width={16}>
+                      <Form.Group>
+                        <Form.TextArea
+                          name="question"
+                          value={question.question}
+                          rows={3}
+                          label={`Question ${index + 1}`}
+                          placeholder="What is a bit?"
+                          onChange={this.onQuestionChange(index)}
+                          width={11}
+                        />
+                        <Form.Select
+                          name="type"
+                          value={question.type}
+                          label="Type"
+                          options={this.questionTypes}
+                          placeholder="Essay"
+                          width={4}
+                          onChange={this.onQuestionChange(index)}
+                        />
+                        <Button
+                          floated="right"
+                          negative
+                          icon="minus"
+                          onClick={this.onRemoveQuestion(index)}
+                          disabled={questions.length === 1}
+                        />
+                      </Form.Group>
+                    </Grid.Column>
+                    <Grid.Column width={16}>
+                      <Form.Group>
+                        <Form.TextArea
+                          name="answer"
+                          value={question.answer}
+                          rows={3}
+                          label="Answer"
+                          placeholder="A digit: 0 or 1"
+                          width={11}
+                          onChange={this.onQuestionChange(index)}
+                        />
+                        <Form.Input
+                          name="points"
+                          value={question.points}
+                          label="Points"
+                          placeholder="10"
+                          width={4}
+                          onChange={this.onQuestionChange(index)}
+                        />
+                      </Form.Group>
+                    </Grid.Column>
+                  </Grid.Row>
+                  ))}
+              </Grid>
+              <Button type="button" positive icon="add" onClick={this.onAddQuestion} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Form>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  courses: state.courseState.courses,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onFetchCourses: courses => dispatch({ type: 'LOADING_COURSES', courses }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateExam);
+export default CreateExam;

@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Button, Form, Table } from 'semantic-ui-react';
+import { Modal, Button, Form, Table } from 'semantic-ui-react';
 import { List } from 'immutable';
+import EditCourses from '../containers/EditCourses';
 
-import { onceGetFaculties } from '../firebase/db';
-
-class Faculties extends React.Component {
+export default class Faculties extends React.Component {
   static propTypes = {
-    onFetchFaculties: PropTypes.func.isRequired,
     createFaculty: PropTypes.func.isRequired,
     faculties: PropTypes.instanceOf(List).isRequired,
   }
@@ -22,12 +19,6 @@ class Faculties extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.saveFaculty = this.saveFaculty.bind(this);
     this.newFacultyForm = this.newFacultyForm.bind(this);
-  }
-
-  componentWillMount() {
-    const { onFetchFaculties } = this.props;
-
-    onceGetFaculties().then(snapshot => onFetchFaculties(snapshot.val()));
   }
 
   handleChange(e, { name, value }) {
@@ -44,14 +35,33 @@ class Faculties extends React.Component {
       <Form onSubmit={this.saveFaculty}>
         <Form.Input placeholder="Computer Science and Engineering" name="name" value={name} onChange={this.handleChange} />
         <Form.Input placeholder="CSE" name="shortName" value={shortName} onChange={this.handleChange} />
-        <Button type="submit">Save</Button>
+        <Button positive type="submit">Create</Button>
       </Form>
     );
   }
 
+  showEditCoursesModal = faculty =>
+    (
+      <Modal trigger={<Button basic icon="edit" color="green" />} closeIcon>
+        <Modal.Header>Editing courses for faculty: {faculty.shortName}</Modal.Header>
+        <Modal.Content>
+          <EditCourses
+            facultyId={faculty.id}
+            courseIds={faculty.courseIds}
+          />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button primary>
+            Save
+          </Button>
+        </Modal.Actions>
+      </Modal>
+    );
+
+
   render() {
-    const { name, shortName } = this.state;
     const { faculties } = this.props;
+    const { name, shortName } = this.state;
     return (
       <div>
         <Table celled padded>
@@ -63,14 +73,20 @@ class Faculties extends React.Component {
               <Table.HeaderCell>Lecturers</Table.HeaderCell>
               <Table.HeaderCell>Students</Table.HeaderCell>
             </Table.Row>
-            {Object.keys(faculties).map(key =>
+            {(faculties).map(faculty =>
               (
-                <Table.Row>
-                  <Table.Cell>{faculties[key].name}</Table.Cell>
-                  <Table.Cell>{faculties[key].shortName}</Table.Cell>
-                  <Table.Cell>0</Table.Cell>
-                  <Table.Cell>0</Table.Cell>
-                  <Table.Cell>0</Table.Cell>
+                <Table.Row key={faculty.id}>
+                  <Table.Cell>{faculty.name}</Table.Cell>
+                  <Table.Cell>{faculty.shortName}</Table.Cell>
+                  <Table.Cell>
+                    {faculty.courseIds.size} {this.showEditCoursesModal(faculty)}
+                  </Table.Cell>
+                  <Table.Cell>
+                    0 <Button basic icon="edit" color="green" />
+                  </Table.Cell>
+                  <Table.Cell>
+                    0 <Button basic icon="edit" color="green" />
+                  </Table.Cell>
                 </Table.Row>
             ))}
           </Table.Header>
@@ -80,14 +96,3 @@ class Faculties extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  faculties: state.facultyState.faculties,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onFetchFaculties: faculties => dispatch({ type: 'LOADING_FACULTIES', faculties }),
-  createFaculty: faculty => dispatch({ type: 'CREATING_FACULTY', payload: { faculty } }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Faculties);

@@ -2,42 +2,43 @@ import { db } from './firebase';
 
 // User API
 
-export const createUser = (id, username, email) => db.ref(`users/${id}`).set({
-  username,
-  email,
-});
+export const usersRef = db.ref('users');
+export const facultiesRef = db.ref('faculties');
+export const coursesRef = db.ref('courses');
+export const examsRef = db.ref('exams');
 
-export const createFaculty = ({ name, shortName }) => {
-  const newFacultyRef = db.ref('faculties').push({
-    name,
-    shortName,
+// export const createUser = (id, username, email) => usersRef.child(id).set({
+//   username,
+//   email,
+// });
+
+export const createFaculty = (faculty) => {
+  facultiesRef.push({
+    ...faculty,
   });
-  console.log(newFacultyRef);
 };
 
-export const createCourse = (name, code, semester, year, active = true) => {
-  const newCourseRef = db.ref('courses').push({
-    name,
-    code,
-    semester,
-    year,
+export const updateFaculty = (id, fields) => {
+  facultiesRef.child(id).update(fields);
+};
+
+export const createCourse = (attrs, active = true) => {
+  coursesRef.push({
+    ...attrs,
     active,
   });
-  console.log(newCourseRef);
 };
 
-export const createExam = (courseId, questions) => {
-  const newExamRef = db.ref('exams').push({
-    courseId,
-    questions,
+export const createExam = (exam) => {
+  examsRef.push({
+    ...exam,
   });
-  console.log(newExamRef);
 };
 
-export const onceGetUsers = () => db.ref('users').once('value');
+export const onceGetUsers = () => usersRef.once('value');
 
-export const onceGetFaculties = () => db.ref('faculties').once('value');
+export const onceGetFaculties = () => facultiesRef.once('value');
 
-export const onceGetCourses = () => db.ref('courses').once('value');
+export const onceGetCourses = () => coursesRef.once('value');
 
-export const onceGetExams = () => db.ref('exams').once('value');
+export const onceGetExams = () => examsRef.once('value');
