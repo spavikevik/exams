@@ -6,7 +6,7 @@ const Signout = () =>
   (
     <button
       type="button"
-      onClick={auth.SignOut}
+      onClick={auth.signOut}
     >
     Sign Out
     </button>

@@ -52,7 +52,7 @@ class SigninForm extends Component {
       history,
     } = this.props;
 
-    auth.signinWithEmailAndPassword(email, password)
+    auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
         history.push(routes.HOME);
