@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Table } from 'semantic-ui-react';
 import { List } from 'immutable';
+import generator from 'generate-password';
 
 export default class Courses extends React.Component {
   static propTypes = {
@@ -16,7 +17,11 @@ export default class Courses extends React.Component {
       code: '',
       semester: '',
       year: '',
-      secretKey: '',
+      secretKey: generator.generate({
+        length: 14,
+        numbers: true,
+        uppercase: true,
+      }),
     };
     this.handleChange = this.handleChange.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
@@ -68,6 +73,7 @@ export default class Courses extends React.Component {
           name="secretKey"
           value={secretKey}
           onChange={this.handleChange}
+          readOnly
         />
         <Button positive type="submit">Create</Button>
       </Form>
@@ -88,17 +94,19 @@ export default class Courses extends React.Component {
               <Table.HeaderCell>Code</Table.HeaderCell>
               <Table.HeaderCell>Semester</Table.HeaderCell>
               <Table.HeaderCell>Year</Table.HeaderCell>
+              <Table.HeaderCell>Enrollment key</Table.HeaderCell>
             </Table.Row>
-            {courses.map(course =>
-              (
-                <Table.Row>
-                  <Table.Cell>{course.name}</Table.Cell>
-                  <Table.Cell>{course.code}</Table.Cell>
-                  <Table.Cell>{course.semester}</Table.Cell>
-                  <Table.Cell>{course.year}</Table.Cell>
-                </Table.Row>
-              ))}
           </Table.Header>
+          {courses.map(course =>
+            (
+              <Table.Row>
+                <Table.Cell>{course.name}</Table.Cell>
+                <Table.Cell>{course.code}</Table.Cell>
+                <Table.Cell>{course.semester}</Table.Cell>
+                <Table.Cell>{course.year}</Table.Cell>
+                <Table.Cell>{course.secretKey}</Table.Cell>
+              </Table.Row>
+            ))}
         </Table>
         { this.newCourseForm(name, code, semester, year, secretKey) }
       </div>

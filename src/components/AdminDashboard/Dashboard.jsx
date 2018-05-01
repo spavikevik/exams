@@ -4,7 +4,7 @@ import { Grid } from 'semantic-ui-react';
 
 import DashboardMenu from './DashboardMenu';
 
-const Dashboard = props => (
+const AdminDashboard = props => (
   <Grid>
     <Grid.Row>
       <Grid.Column width={3}>
@@ -17,8 +17,8 @@ const Dashboard = props => (
   </Grid>
 );
 
-Dashboard.propTypes = {
+AdminDashboard.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default Dashboard;
+export default AdminDashboard;

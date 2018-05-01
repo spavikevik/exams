@@ -37,6 +37,7 @@ class Navigation extends Component {
         <Menu.Item name="landing" active={activeItem === 'lading'} onClick={this.onItemClick(routes.LANDING)} />
         <Menu.Item name="home" active={activeItem === 'home'} onClick={this.onItemClick(routes.HOME)} />
         <Menu.Item name="account" active={activeItem === 'account'} onClick={this.onItemClick(routes.ACCOUNT)} />
+        <Menu.Item name="student" active={activeItem === 'student'} onClick={this.onItemClick(routes.STUDENT_PROFILE)} />
         <Menu.Item name="dashboard" active={activeItem === 'dashboard'} onClick={this.onItemClick(routes.ADMIN)} />
       </Menu>
     );

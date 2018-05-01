@@ -5,6 +5,7 @@ import userReducer from './user';
 import facultyReducer from './faculty';
 import courseReducer from './course';
 import examReducer from './exam';
+import studentReducer from './student';
 
 const rootReducer = combineReducers({
   sessionState: sessionReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   facultyState: facultyReducer,
   courseState: courseReducer,
   examState: examReducer,
+  studentState: studentReducer,
   form: formReducer,
 });
 
