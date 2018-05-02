@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Faculties from '../components/Faculties';
+import Faculties from '../../components/AdminDashboard/Faculties';
 
 const mapStateToProps = state => ({
   faculties: state.facultyState.faculties,

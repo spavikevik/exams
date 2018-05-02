@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Table, Modal, Icon } from 'semantic-ui-react';
 import { List } from 'immutable';
-import CreateExam from '../containers/CreateExam';
+import CreateExam from '../../../containers/AdminDashboard/Exams/CreateExam';
 
 export default class Exams extends React.Component {
   static propTypes = {

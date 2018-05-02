@@ -6,8 +6,8 @@ import { Menu } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 
 // import Signout from './Signout';
-import * as routes from '../constants/routes';
-import User from '../models/user';
+import * as routes from '../../constants/routes';
+import User from '../../models/user';
 
 class Navigation extends Component {
   static propTypes = {

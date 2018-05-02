@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { List } from 'immutable';
 
-import withAuthorization from './withAuthorization';
-import { enrollCourse } from '../actions/student';
+import withAuthorization from '../Auth/withAuthorization';
+import { enrollCourse } from '../../actions/student';
 
 
 class StudentCourses extends React.Component {

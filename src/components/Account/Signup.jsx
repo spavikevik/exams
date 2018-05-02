@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Link } from 'react-router-dom';
 
-import * as routes from '../constants/routes';
-import { auth, db } from '../firebase';
+import * as routes from '../../constants/routes';
+import { auth, db } from '../../firebase';
 
 const Signup = () =>
   (

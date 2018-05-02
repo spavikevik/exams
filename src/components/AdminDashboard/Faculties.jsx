@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form, Table } from 'semantic-ui-react';
 import { List } from 'immutable';
-import EditCourses from '../containers/EditCourses';
+import EditCourses from '../../containers/EditCourses';
 
 export default class Faculties extends React.Component {
   static propTypes = {

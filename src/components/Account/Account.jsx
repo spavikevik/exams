@@ -4,10 +4,10 @@ import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { getCourseBySecretKey } from '../firebase/db';
+import { getCourseBySecretKey } from '../../firebase/db';
 
-import User from '../models/user';
-import withAuthorization from './withAuthorization';
+import User from '../../models/user';
+import withAuthorization from '../Auth/withAuthorization';
 
 class Account extends React.Component {
   static propTypes = {

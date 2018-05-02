@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import withAuthorization from './withAuthorization';
-import { db } from '../firebase';
-import User from '../models/user';
+import withAuthorization from '../Auth/withAuthorization';
+import { db } from '../../firebase';
+import User from '../../models/user';
 
 class Home extends Component {
   static propTypes = {

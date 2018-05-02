@@ -5,23 +5,25 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import Navigation from './Navigation';
-import Landing from './Landing';
-import Signup from './Signup';
-import Signin from './Signin';
-import PasswordForget from './PasswordForget';
-import Home from './Home';
-import Account from './Account';
+import Navigation from './Main/Navigation';
+import Landing from './Main/Landing';
+import Home from './Main/Home';
+
+import Account from './Account/Account';
+import Signup from './Account/Signup';
+import Signin from './Account/Signin';
+import PasswordForget from './Account/PasswordForget';
+
 import Exam from './Exam/Exam';
 // import AdminDashboard from './AdminDashboard/Dashboard';
-import StudentDashboard from './StudentDashboard/Dashboard';
+import StudentDashboard from './Student/Dashboard';
 // import Faculties from '../containers/Faculties';
 // import Courses from '../containers/Courses';
-import Exams from '../containers/Exams';
+import Exams from '../containers/AdminDashboard/Exams/Exams';
 
 import * as routes from '../constants/routes';
-import withAuthentication from './withAuthentication';
-import StudentCourses from './StudentCourses';
+import withAuthentication from './Auth/withAuthentication';
+import StudentCourses from './Student/StudentCourses';
 
 const App = () =>
   (

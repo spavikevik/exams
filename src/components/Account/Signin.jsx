@@ -4,8 +4,9 @@ import { withRouter } from 'react-router-dom';
 
 import { PasswordForgetLink } from './PasswordForget';
 import { SignupLink } from './Signup';
-import { auth } from '../firebase';
-import * as routes from '../constants/routes';
+import { auth } from '../../firebase';
+
+import * as routes from '../../constants/routes';
 
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
