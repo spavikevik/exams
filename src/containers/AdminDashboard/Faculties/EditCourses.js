@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';
-import EditCourses from '../../../components/AdminDashboard/Courses/EditCourse';
+import EditCourses from '../../../components/AdminDashboard/Faculties/EditCourses';
 import { updateFaculty } from '../../../actions/faculty';
 
 const mapStateToProps = state => ({
