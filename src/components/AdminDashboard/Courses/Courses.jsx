@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Table } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { List } from 'immutable';
-import generator from 'generate-password';
+import NewCourse from './NewCourse';
 
 export default class Courses extends React.Component {
   static propTypes = {
@@ -12,78 +12,19 @@ export default class Courses extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      code: '',
-      semester: '',
-      year: '',
-      secretKey: generator.generate({
-        length: 14,
-        numbers: true,
-        uppercase: true,
-      }),
-    };
     this.handleChange = this.handleChange.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
-    this.newCourseForm = this.newCourseForm.bind(this);
   }
 
   handleChange(e, { name, value }) {
     this.setState({ [name]: value });
   }
 
-  saveCourse() {
-    this.props.createCourse(this.state);
-  }
-
-  newCourseForm(name, code, semester, year, secretKey) {
-    return (
-      <Form onSubmit={this.saveCourse}>
-        <Form.Input
-          label="Course name"
-          placeholder="Mathematics 1"
-          name="name"
-          value={name}
-          onChange={this.handleChange}
-        />
-        <Form.Input
-          label="Code name"
-          placeholder="MAT001"
-          name="code"
-          value={code}
-          onChange={this.handleChange}
-        />
-        <Form.Input
-          label="Semester"
-          placeholder="Winter"
-          name="semester"
-          value={semester}
-          onChange={this.handleChange}
-        />
-        <Form.Input
-          label="Study year"
-          placeholder="2018"
-          name="year"
-          value={year}
-          onChange={this.handleChange}
-        />
-        <Form.Input
-          label="Enrollment key"
-          placeholder="Input a secret key here"
-          name="secretKey"
-          value={secretKey}
-          onChange={this.handleChange}
-          readOnly
-        />
-        <Button positive type="submit">Create</Button>
-      </Form>
-    );
+  saveCourse = (values) => {
+    this.props.createCourse(values);
   }
 
   render() {
-    const {
-      name, code, semester, year, secretKey,
-    } = this.state;
     const { courses } = this.props;
     return (
       <div>
@@ -108,7 +49,7 @@ export default class Courses extends React.Component {
               </Table.Row>
             ))}
         </Table>
-        { this.newCourseForm(name, code, semester, year, secretKey) }
+        <NewCourse onSubmit={this.saveCourse} />
       </div>
     );
   }
