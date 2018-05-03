@@ -51,9 +51,8 @@ export const enrollCourse = (studentId, enrollmentKey) => {
   studentsRef
     .child(studentId)
     .child('enrolledCourses')
-    .set({
-      enrollmentKey,
-    });
+    .child('enrollmentKey')
+    .set(enrollmentKey);
 };
 
 export const onceGetUsers = () => usersRef.once('value');
