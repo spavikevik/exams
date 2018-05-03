@@ -2,6 +2,7 @@
   "presets": [
     "env",
     "es2015",
+    "es2017",
     "react",
     "stage-0"
   ],
@@ -10,6 +11,7 @@
       "import", 
       { "libraryName": "antd", "libraryDirectory": "es", "style": "css" },
       "syntax-flow",
+      "transform-es2015-destructuring",
       "transform-flow-strip-types",
       "transform-class-properties",
       "transform-es2015-arrow-functions",
