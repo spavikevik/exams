@@ -1,15 +1,19 @@
 const INITIAL_STATE = {
+  admin: false,
+  accessLevel: 0,
   authUser: null,
 };
 
 const applySetAuthUser = (state, action) => ({
   ...state,
-  authUser: action.authUser,
+  admin: action.claims.admin,
+  accessLevel: action.claims.accessLevel,
+  authUser: action.authUser || null,
 });
 
 function sessionReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case 'AUTH_USER_SET': {
+    case 'SETTING_AUTH_USER': {
       return applySetAuthUser(state, action);
     }
     default:

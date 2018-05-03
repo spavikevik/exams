@@ -8,6 +8,7 @@ import * as routes from '../../constants/routes';
 class DashboardMenu extends React.Component {
   static propTypes = {
     history: ReactRouterPropTypes.history.isRequired,
+    match: ReactRouterPropTypes.match.isRequired,
   }
 
   constructor(props) {
@@ -20,7 +21,7 @@ class DashboardMenu extends React.Component {
   onItemClick(path) {
     return (e, { name }) => {
       this.setState({ activeItem: name });
-      this.props.history.push(path);
+      this.props.history.push(`${this.props.match.path}/${path}`);
     };
   }
 
@@ -33,9 +34,9 @@ class DashboardMenu extends React.Component {
         pointing
         secondary
       >
-        <Menu.Item name="profile" active={activeItem === 'profile'} onClick={this.onItemClick(routes.STUDENT_PROFILE)} />
-        <Menu.Item name="courses" active={activeItem === 'courses'} onClick={this.onItemClick(routes.STUDENT_COURSES)} />
-        <Menu.Item name="exams" active={activeItem === 'exams'} onClick={this.onItemClick(routes.STUDENT_EXAMS)} />
+        <Menu.Item name="profile" active={activeItem === 'profile'} onClick={this.onItemClick(routes.PROFILE)} />
+        <Menu.Item name="courses" active={activeItem === 'courses'} onClick={this.onItemClick(routes.COURSES)} />
+        <Menu.Item name="exams" active={activeItem === 'exams'} onClick={this.onItemClick(routes.EXAMS)} />
       </Menu>
     );
   }

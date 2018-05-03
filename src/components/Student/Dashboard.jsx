@@ -1,8 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Grid } from 'semantic-ui-react';
+import { Route } from 'react-router-dom';
+
+import * as routes from '../../constants/routes';
+import { userIsAuthenticated } from '../../helpers/authHelpers';
 
 import DashboardMenu from './DashboardMenu';
+import Courses from '../../containers/Student/Courses';
 
 const StudentDashboard = props => (
   <Grid>
@@ -11,14 +16,15 @@ const StudentDashboard = props => (
         <DashboardMenu />
       </Grid.Column>
       <Grid.Column width={11}>
-        {props.children}
+        <Route exact path={`${props.match.path}/${routes.COURSES}`} component={userIsAuthenticated(Courses)} />
+        <Route exact path={`${props.match.path}/${routes.EXAMS}`} component={userIsAuthenticated(Courses)} />
       </Grid.Column>
     </Grid.Row>
   </Grid>
 );
 
 StudentDashboard.propTypes = {
-  children: PropTypes.node.isRequired,
+  match: ReactRouterPropTypes.match.isRequired, // eslint-disable-line
 };
 
 export default StudentDashboard;

@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import { getCourseBySecretKey } from '../../firebase/db';
 
 import User from '../../models/user';
-import withAuthorization from '../Auth/withAuthorization';
 
-class Account extends React.Component {
+export default class Account extends React.Component {
   static propTypes = {
     authUser: PropTypes.instanceOf(User).isRequired,
   }
@@ -51,14 +48,3 @@ class Account extends React.Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  authUser: state.sessionState.authUser,
-});
-
-const authCondition = authUser => !!authUser;
-
-export default compose(
-  withAuthorization(authCondition),
-  connect(mapStateToProps),
-)(Account);

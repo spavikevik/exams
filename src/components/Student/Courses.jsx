@@ -1,16 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Form, Button } from 'semantic-ui-react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { List } from 'immutable';
 
-import withAuthorization from '../Auth/withAuthorization';
-import { enrollCourse } from '../../actions/student';
-
-
-class StudentCourses extends React.Component {
+export default class StudentCourses extends React.Component {
   static propTypes = {
     authUser: PropTypes.shape({
       uid: PropTypes.string.isRequired,
@@ -74,18 +67,3 @@ class StudentCourses extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  courses: state.studentState.enrolledCourses,
-  authUser: state.sessionState.authUser,
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  enrollCourse,
-}, dispatch);
-
-const authCondition = authUser => !!authUser;
-
-export default compose(
-  withAuthorization(authCondition),
-  connect(mapStateToProps, mapDispatchToProps),
-)(StudentCourses);

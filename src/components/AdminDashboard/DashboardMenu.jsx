@@ -8,6 +8,7 @@ import * as routes from '../../constants/routes';
 class DashboardMenu extends React.Component {
   static propTypes = {
     history: ReactRouterPropTypes.history.isRequired,
+    match: ReactRouterPropTypes.match.isRequired,
   }
 
   constructor(props) {
@@ -20,7 +21,7 @@ class DashboardMenu extends React.Component {
   onItemClick(path) {
     return (e, { name }) => {
       this.setState({ activeItem: name });
-      this.props.history.push(path);
+      this.props.history.push(`${this.props.match.path}/${path}`);
     };
   }
 

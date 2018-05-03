@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
-import withAuthorization from '../Auth/withAuthorization';
 import { db } from '../../firebase';
 import User from '../../models/user';
 
-class Home extends Component {
+export default class Home extends Component {
   static propTypes = {
     onSetUsers: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(User).isRequired,
@@ -49,17 +46,3 @@ UserList.propTypes = {
   users: PropTypes.arrayOf(User).isRequired,
 };
 
-const authCondition = authUser => !!authUser;
-
-const mapStateToProps = state => ({
-  users: state.userState.users,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onSetUsers: users => dispatch({ type: 'USERS_SET', users }),
-});
-
-export default compose(
-  withAuthorization(authCondition),
-  connect(mapStateToProps, mapDispatchToProps),
-)(Home);
