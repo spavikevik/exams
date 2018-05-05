@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { createExam } from '../../../actions/exam';
-import CreateExam from '../../../components/AdminDashboard/Exams/CreateExam';
+import { createExam } from '../../../../actions/exam';
+import CreateExam from '../../../../components/AdminDashboard/Exams/CreateExam/CreateExam';
 
 const mapStateToProps = state => ({
   courses: state.courseState.courses,

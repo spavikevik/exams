@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import Editor from '../../../CodeChallenge/Editor';
+import Editor from '../../../../CodeChallenge/Editor';
 
 export default class Code extends React.Component {
   static propTypes = {

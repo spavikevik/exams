@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import { Form } from 'semantic-ui-react';
 
-import MultipleChoice from './Answers/MultipleChoice';
-import Short from './Answers/Short';
-import Code from './Answers/Code';
+import MultipleChoice from './MultipleChoice';
+import Short from './Short';
+import Code from './Code';
 
 export default class Answer extends React.Component {
   static propTypes = {

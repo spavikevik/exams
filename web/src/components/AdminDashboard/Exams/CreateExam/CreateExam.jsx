@@ -6,7 +6,13 @@ import format from 'date-fns/format';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
-import Answer from './Answer';
+import {
+  examTypes,
+  questionTypes,
+  examDurations,
+} from '../../../../constants/examConstants';
+
+import Answer from './Answer/Answer';
 
 class CreateExam extends React.Component {
   static propTypes = {
@@ -17,25 +23,6 @@ class CreateExam extends React.Component {
 
   constructor(props) {
     super(props);
-    this.examTypes = [
-      { key: 0, value: 0, text: 'First midterm' },
-      { key: 1, value: 1, text: 'Second midterm' },
-      { key: 2, value: 2, text: 'Final Exam' },
-    ];
-    this.questionTypes = [
-      { key: 0, value: 0, text: 'Multiple choice' },
-      { key: 1, value: 1, text: 'Essay' },
-      { key: 2, value: 2, text: 'Short answer' },
-      { key: 3, value: 3, text: 'Code' },
-    ];
-    this.examDurations = [
-      { key: 0, value: 1, text: '1 hour' },
-      { key: 1, value: 1.5, text: '1 hour 30 minutes' },
-      { key: 2, value: 2, text: '2 hours' },
-      { key: 3, value: 2.5, text: '2 hours 30 minutes' },
-      { key: 4, value: 3, text: '3 hours' },
-      { key: 5, value: 3.5, text: '3 hours 30 minutes' },
-    ];
     this.state = {
       type: '',
       date: '',
@@ -165,7 +152,7 @@ class CreateExam extends React.Component {
                 value={duration}
                 selection
                 placeholder="Exam duration"
-                options={this.examDurations}
+                options={examDurations}
                 onChange={this.handleChange}
               />
             </Grid.Column>
@@ -189,7 +176,7 @@ class CreateExam extends React.Component {
                       value={type}
                       selection
                       placeholder="Type"
-                      options={this.examTypes}
+                      options={examTypes}
                       onChange={this.handleChange}
                     />
                   </Grid.Column>
@@ -206,7 +193,7 @@ class CreateExam extends React.Component {
                         <Form.Select
                           name="type"
                           value={question.type}
-                          options={this.questionTypes}
+                          options={questionTypes}
                           placeholder="Question type"
                           width={4}
                           onChange={this.onQuestionChange(index)}
