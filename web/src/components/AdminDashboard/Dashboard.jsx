@@ -6,6 +6,7 @@ import Courses from '../../containers/AdminDashboard/Courses/Courses';
 import Faculties from '../../containers/AdminDashboard/Faculties/Faculties';
 import Exams from '../../containers/AdminDashboard/Exams/Exams';
 import Dashboard from '../Dashboard/Dashboard';
+import CodeQuestion from '../Exam/CodeQuestion';
 
 import { userIsAdmin } from '../../helpers/authHelpers';
 
@@ -13,6 +14,7 @@ const items = {
   [routes.FACULTIES]: userIsAdmin(Faculties),
   [routes.COURSES]: userIsAdmin(Courses),
   [routes.EXAMS]: userIsAdmin(Exams),
+  code: CodeQuestion,
 };
 
 const AdminDashboard = props => (
