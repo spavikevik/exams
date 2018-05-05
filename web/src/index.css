@@ -17,3 +17,23 @@ body {
   transform-origin: center !important;
   transition: all ease .5s;
 }
+
+.new-question-heading {
+  line-height: 2.4 !important;
+}
+
+.new-question-button {
+  margin-top: 15px !important;
+}
+
+.new-question-answer {
+  padding-bottom: 15px;
+}
+
+.monaco-editor {
+  border-radius: .28571429rem;
+}
+
+.monaco-editor .overflow-guard {
+  border-radius: .28571429rem;
+}

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Grid } from 'semantic-ui-react';
+import { Form, Button, Grid, Header, Divider } from 'semantic-ui-react';
 import { List } from 'immutable';
 import format from 'date-fns/format';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
+
+import Answer from './Answer';
 
 class CreateExam extends React.Component {
   static propTypes = {
@@ -16,23 +18,23 @@ class CreateExam extends React.Component {
   constructor(props) {
     super(props);
     this.examTypes = [
-      { key: 'first', value: 'first', text: 'First midterm' },
-      { key: 'second', value: 'second', text: 'Second midterm' },
-      { key: 'final', value: 'final', text: 'Final Exam' },
+      { key: 0, value: 0, text: 'First midterm' },
+      { key: 1, value: 1, text: 'Second midterm' },
+      { key: 2, value: 2, text: 'Final Exam' },
     ];
     this.questionTypes = [
-      { key: 'choice', value: 'choice', text: 'Multiple choice' },
-      { key: 'essay', value: 'essay', text: 'Essay' },
-      { key: 'short', value: 'short', text: 'Short' },
-      { key: 'code', value: 'code', text: 'Code' },
+      { key: 0, value: 0, text: 'Multiple choice' },
+      { key: 1, value: 1, text: 'Essay' },
+      { key: 2, value: 2, text: 'Short answer' },
+      { key: 3, value: 3, text: 'Code' },
     ];
     this.examDurations = [
-      { key: 1, value: 1, text: '1 hour' },
-      { key: 1.5, value: 1.5, text: '1 hour 30 minutes' },
+      { key: 0, value: 1, text: '1 hour' },
+      { key: 1, value: 1.5, text: '1 hour 30 minutes' },
       { key: 2, value: 2, text: '2 hours' },
-      { key: 2.5, value: 2.5, text: '2 hours 30 minutes' },
-      { key: 3, value: 3, text: '3 hours' },
-      { key: 3.5, value: 3.5, text: '3 hours 30 minutes' },
+      { key: 3, value: 2.5, text: '2 hours 30 minutes' },
+      { key: 4, value: 3, text: '3 hours' },
+      { key: 5, value: 3.5, text: '3 hours 30 minutes' },
     ];
     this.state = {
       type: '',
@@ -41,6 +43,7 @@ class CreateExam extends React.Component {
       duration: '',
       questions: [
         {
+          type: '',
           question: '',
           answer: '',
           points: '',
@@ -55,12 +58,23 @@ class CreateExam extends React.Component {
 
   onQuestionChange(index) {
     return (e, { name, value }) => {
+      let update = {};
+      if (name === 'type') {
+        update = {
+          [name]: value,
+          answer: this.createAnswerStructure(value),
+        };
+      } else {
+        update = {
+          [name]: value,
+        };
+      }
       this.setState({
         questions: [
           ...this.state.questions.slice(0, index),
           {
             ...this.state.questions[index],
-            [name]: value,
+            ...update,
           },
           ...this.state.questions.slice(index + 1),
         ],
@@ -75,6 +89,7 @@ class CreateExam extends React.Component {
         {
           question: '',
           answer: '',
+          correctAnswer: 1,
           points: '',
         },
       ],
@@ -97,6 +112,22 @@ class CreateExam extends React.Component {
       ...this.state,
       date: format(this.state.date, 'YYYY/MM/DD'),
     });
+  }
+
+  createAnswerStructure = (questionType) => {
+    switch (questionType) {
+      case 0:
+        return [''];
+      case 2:
+        return '';
+      case 3:
+        return {
+          input: '// Input',
+          output: '// Output',
+        };
+      default:
+        return null;
+    }
   }
 
   handleChange(e, { name, value }) {
@@ -163,29 +194,25 @@ class CreateExam extends React.Component {
                     />
                   </Grid.Column>
                 </Grid.Row>
+                <Divider />
 
                 {questions.map((question, index) => (
-                  <Grid.Row>
-                    <Grid.Column width={16}>
-                      <Form.Group>
-                        <Form.TextArea
-                          name="question"
-                          value={question.question}
-                          rows={3}
-                          label={`Question ${index + 1}`}
-                          placeholder="What is a bit?"
-                          onChange={this.onQuestionChange(index)}
-                          width={11}
-                        />
+                  <React.Fragment>
+                    <Grid.Row>
+                      <Grid.Column width={3}>
+                        <Header className="new-question-heading" as="h3">Question {index + 1}</Header>
+                      </Grid.Column>
+                      <Grid.Column width={10}>
                         <Form.Select
                           name="type"
                           value={question.type}
-                          label="Type"
                           options={this.questionTypes}
-                          placeholder="Essay"
+                          placeholder="Question type"
                           width={4}
                           onChange={this.onQuestionChange(index)}
                         />
+                      </Grid.Column>
+                      <Grid.Column width={2}>
                         <Button
                           floated="right"
                           negative
@@ -193,33 +220,44 @@ class CreateExam extends React.Component {
                           onClick={this.onRemoveQuestion(index)}
                           disabled={questions.length === 1}
                         />
-                      </Form.Group>
-                    </Grid.Column>
-                    <Grid.Column width={16}>
-                      <Form.Group>
-                        <Form.TextArea
-                          name="answer"
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                      <Grid.Column width={16}>
+                        <Form.Group>
+                          <Form.TextArea
+                            name="question"
+                            value={question.question}
+                            rows={3}
+                            label="Question text"
+                            placeholder="What is a bit?"
+                            onChange={this.onQuestionChange(index)}
+                            width={11}
+                          />
+                          <Form.Input
+                            name="points"
+                            value={question.points}
+                            label="Points"
+                            placeholder="10"
+                            width={4}
+                            onChange={this.onQuestionChange(index)}
+                          />
+                        </Form.Group>
+                      </Grid.Column>
+                      <Grid.Column width={16}>
+                        <Answer
+                          questionType={question.type}
                           value={question.answer}
-                          rows={3}
-                          label="Answer"
-                          placeholder="A digit: 0 or 1"
-                          width={11}
+                          correctAnswer={question.correctAnswer}
                           onChange={this.onQuestionChange(index)}
                         />
-                        <Form.Input
-                          name="points"
-                          value={question.points}
-                          label="Points"
-                          placeholder="10"
-                          width={4}
-                          onChange={this.onQuestionChange(index)}
-                        />
-                      </Form.Group>
-                    </Grid.Column>
-                  </Grid.Row>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Divider />
+                  </React.Fragment>
                   ))}
               </Grid>
-              <Button type="button" positive icon="add" onClick={this.onAddQuestion} />
+              <Button className="new-question-button" type="button" positive icon="add" onClick={this.onAddQuestion} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
