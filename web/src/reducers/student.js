@@ -23,7 +23,7 @@ function studentReducer(state = INITIAL_STATE, action) {
           return result;
         }, []);
         const student = state.student.set('enrolledCourses', new List(courses));
-        return Object.assign(state, { student });
+        return Object.assign({}, state, { student });
       }
       return state;
     case 'UPDATING_STUDENTS':
@@ -35,7 +35,7 @@ function studentReducer(state = INITIAL_STATE, action) {
       } else {
         students = state.students.push(Student.fromObject(action.key, action.item));
       }
-      return Object.assign(state, { students });
+      return Object.assign({}, state, { students });
     default:
       return state;
   }

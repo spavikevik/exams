@@ -10,6 +10,7 @@ function examReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case 'UPDATING_EXAMS':
       return Object.assign(
+        {},
         state,
         {
           exams: state.exams.push(Exam.fromObject(action.key, action.item)),

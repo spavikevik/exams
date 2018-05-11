@@ -18,7 +18,7 @@ function facultyReducer(state = INITIAL_STATE, action) {
       } else {
         faculties = state.faculties.push(Faculty.fromObject(action.key, action.item));
       }
-      return { faculties };
+      return Object.assign({}, state, { faculties });
     default:
       return state;
   }
