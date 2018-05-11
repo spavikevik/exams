@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { db } from '../../firebase';
-import User from '../../models/user';
 
 export default class Home extends Component {
   static propTypes = {
     onSetUsers: PropTypes.func.isRequired,
-    users: PropTypes.arrayOf(User).isRequired,
+    users: PropTypes.arrayOf({}).isRequired,
   };
 
   componentDidMount() {
@@ -43,6 +42,6 @@ const UserList = ({ users }) =>
   );
 
 UserList.propTypes = {
-  users: PropTypes.arrayOf(User).isRequired,
+  users: PropTypes.arrayOf({}).isRequired,
 };
 

@@ -1,20 +1,14 @@
 import { List } from 'immutable';
 import Course from '../models/course';
+import Student from '../models/student';
 
 const INITIAL_STATE = {
-  enrolledCourses: new List(),
+  student: new Student(),
+  students: new List(),
 };
 
-const loadCourses = (state, action) => ({
-  ...state,
-  enrolledCourses: new List(Object
-    .keys(action.enrolledCourses)
-    .map(key =>
-      Course
-        .fromObject(key, action.enrolledCourses[key]))),
-});
-
 function studentReducer(state = INITIAL_STATE, action) {
+  let studentIndex = -1;
   switch (action.type) {
     case 'UPDATING_STUDENT':
       if (action.key === 'enrolledCourses') {
@@ -27,18 +21,26 @@ function studentReducer(state = INITIAL_STATE, action) {
           }
           return result;
         }, []);
+        const student = state.student.set('enrolledCourses', new List(courses));
         return {
           ...state,
-          enrolledCourses: new List(courses),
+          student,
         };
       }
       return state;
-    case 'LOADING_ENROLLED_COURSES':
-      return loadCourses(state, action);
-    case 'UPDATING_ENROLLED_COURSES':
+    case 'UPDATING_STUDENTS':
+      studentIndex = state.students.findIndex(student => student.id === action.key);
+      if (studentIndex >= 0) {
+        return {
+          ...state,
+          students: state
+            .students
+            .set(studentIndex, Student.fromObject(action.key, action.student)),
+        };
+      }
       return {
         ...state,
-        enrolledCourses: state.enrolledCourses.push(Course.fromObject(action.key, action.course)),
+        students: state.students.push(Student.fromObject(action.key, action.student)),
       };
     default:
       return state;

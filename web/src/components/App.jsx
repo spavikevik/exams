@@ -17,7 +17,7 @@ import AdminDashboard from './AdminDashboard/Dashboard';
 
 import StudentDashboard from './Student/Dashboard';
 
-import Exam from './Exam/Exam';
+import TakeExam from './Exam/TakeExam';
 
 import * as routes from '../constants/routes';
 import {
@@ -40,7 +40,7 @@ const App = () => (
       />
       <Route exact path={routes.HOME} component={userIsAuthenticated(Home)} />
       <Route exact path={routes.ACCOUNT} component={userIsAuthenticated(Account)} />
-      <Route exact path={routes.EXAM} component={userIsAuthenticated(Exam)} />
+      <Route exact path={routes.EXAM} component={userIsAuthenticated(TakeExam)} />
       <Route
         path={routes.DASHBOARD}
         component={adminOrStudent(AdminDashboard, StudentDashboard)}

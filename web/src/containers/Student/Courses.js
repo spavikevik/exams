@@ -6,7 +6,7 @@ import { enrollCourse } from '../../actions/student';
 import Courses from '../../components/Student/Courses';
 
 const mapStateToProps = state => ({
-  courses: state.studentState.enrolledCourses,
+  courses: state.studentState.student.enrolledCourses,
   authUser: state.sessionState.authUser,
 });
 

@@ -64,3 +64,32 @@ exports.enrollCourse = functions.database.ref('/students/{studentId}').onWrite((
   }
   return false;
 });
+
+exports.registerStudent = functions.https.onCall((data, context) => {
+  const {
+    fullName,
+    emailAddress,
+    faculty,
+    indexNumber,
+  } = data;
+
+  const { accessLevel } = context.auth.token || {};
+  if (context.auth.token.admin && accessLevel === 9) {
+    console.log('Registering student with: ', data);
+    return admin.auth().createUser({
+      displayName: fullName,
+      email: emailAddress,
+      emailVerified: true,
+    }).then(user => {
+      return admin.database().ref('/students').update({
+        [user.uid]: {
+          fullName,
+          emailAddress,
+          faculty,
+          indexNumber,
+        },
+      });
+    });
+  }
+  return false;
+});

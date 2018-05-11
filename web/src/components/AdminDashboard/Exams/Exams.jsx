@@ -78,6 +78,7 @@ export default class Exams extends React.Component {
               <Table.HeaderCell>Duration</Table.HeaderCell>
               <Table.HeaderCell>Questions</Table.HeaderCell>
               <Table.HeaderCell>Students</Table.HeaderCell>
+              <Table.HeaderCell>Preview</Table.HeaderCell>
             </Table.Row>
             {(exams).map(exam =>
               (
@@ -92,6 +93,9 @@ export default class Exams extends React.Component {
                   </Table.Cell>
                   <Table.Cell>
                     0 <Button basic icon="edit" color="green" />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Button basic icon="eye" />
                   </Table.Cell>
                 </Table.Row>
             ))}

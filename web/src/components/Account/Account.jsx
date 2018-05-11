@@ -4,11 +4,11 @@ import { Form, Button } from 'semantic-ui-react';
 
 import { getCourseBySecretKey } from '../../firebase/db';
 
-import User from '../../models/user';
-
 export default class Account extends React.Component {
   static propTypes = {
-    authUser: PropTypes.instanceOf(User).isRequired,
+    authUser: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+    }).isRequired,
   }
 
   constructor(props) {
