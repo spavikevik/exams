@@ -38,16 +38,18 @@ export default class Courses extends React.Component {
               <Table.HeaderCell>Enrollment key</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          {courses.map(course =>
-            (
-              <Table.Row>
-                <Table.Cell>{course.name}</Table.Cell>
-                <Table.Cell>{course.code}</Table.Cell>
-                <Table.Cell>{course.semester}</Table.Cell>
-                <Table.Cell>{course.year}</Table.Cell>
-                <Table.Cell>{course.secretKey}</Table.Cell>
-              </Table.Row>
-            ))}
+          <Table.Body>
+            {courses.map(course =>
+              (
+                <Table.Row key={course.id}>
+                  <Table.Cell>{course.name}</Table.Cell>
+                  <Table.Cell>{course.code}</Table.Cell>
+                  <Table.Cell>{course.semester}</Table.Cell>
+                  <Table.Cell>{course.year}</Table.Cell>
+                  <Table.Cell>{course.secretKey}</Table.Cell>
+                </Table.Row>
+              ))}
+          </Table.Body>
         </Table>
         <NewCourse onSubmit={this.saveCourse} />
       </div>

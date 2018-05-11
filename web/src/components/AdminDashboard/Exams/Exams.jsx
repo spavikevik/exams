@@ -80,6 +80,8 @@ export default class Exams extends React.Component {
               <Table.HeaderCell>Students</Table.HeaderCell>
               <Table.HeaderCell>Preview</Table.HeaderCell>
             </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {(exams).map(exam =>
               (
                 <Table.Row key={exam.id}>
@@ -99,7 +101,7 @@ export default class Exams extends React.Component {
                   </Table.Cell>
                 </Table.Row>
             ))}
-          </Table.Header>
+          </Table.Body>
         </Table>
         { this.newExam() }
       </div>

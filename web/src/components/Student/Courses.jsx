@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Form, Button } from 'semantic-ui-react';
-import { List } from 'immutable';
+
+import Student from '../../models/student';
 
 export default class StudentCourses extends React.Component {
   static propTypes = {
     authUser: PropTypes.shape({
       uid: PropTypes.string.isRequired,
     }).isRequired,
-    courses: PropTypes.instanceOf(List).isRequired,
+    student: PropTypes.instanceOf(Student).isRequired,
     enrollCourse: PropTypes.func.isRequired,
   }
 
@@ -31,7 +32,7 @@ export default class StudentCourses extends React.Component {
 
   render() {
     const { enrollmentKey } = this.state;
-    const { courses } = this.props;
+    const { student } = this.props;
     return (
       <div>
         <Table celled padded>
@@ -42,14 +43,16 @@ export default class StudentCourses extends React.Component {
               <Table.HeaderCell>Year</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          {courses.map(course =>
-            (
-              <Table.Row>
-                <Table.Cell>{course.name}</Table.Cell>
-                <Table.Cell>{course.semester}</Table.Cell>
-                <Table.Cell>{course.year}</Table.Cell>
-              </Table.Row>
-            ))}
+          <Table.Body>
+            {student.enrolledCourses.map(course =>
+              (
+                <Table.Row key={course.id}>
+                  <Table.Cell>{course.name}</Table.Cell>
+                  <Table.Cell>{course.semester}</Table.Cell>
+                  <Table.Cell>{course.year}</Table.Cell>
+                </Table.Row>
+              ))}
+          </Table.Body>
         </Table>
         <Form onSubmit={this.enrollCourse}>
           <Form.Input

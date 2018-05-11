@@ -73,6 +73,8 @@ export default class Faculties extends React.Component {
               <Table.HeaderCell>Lecturers</Table.HeaderCell>
               <Table.HeaderCell>Students</Table.HeaderCell>
             </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {(faculties).map(faculty =>
               (
                 <Table.Row key={faculty.id}>
@@ -89,7 +91,7 @@ export default class Faculties extends React.Component {
                   </Table.Cell>
                 </Table.Row>
             ))}
-          </Table.Header>
+          </Table.Body>
         </Table>
         { this.newFacultyForm(name, shortName) }
       </div>

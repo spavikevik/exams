@@ -15,7 +15,7 @@ export default class Students extends React.Component {
       fullName: '',
       emailAddress: '',
       faculty: '',
-      indexNumber: null,
+      indexNumber: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.saveStudent = this.saveStudent.bind(this);
@@ -72,15 +72,17 @@ export default class Students extends React.Component {
               <Table.HeaderCell>Index number</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          {students.map(student =>
-            (
-              <Table.Row>
-                <Table.Cell>{student.fullName}</Table.Cell>
-                <Table.Cell>{student.emailAddress}</Table.Cell>
-                <Table.Cell>{student.faculty}</Table.Cell>
-                <Table.Cell>{student.indexNumber}</Table.Cell>
-              </Table.Row>
-            ))}
+          <Table.Body>
+            {students.map(student =>
+              (
+                <Table.Row key={student.id}>
+                  <Table.Cell>{student.fullName}</Table.Cell>
+                  <Table.Cell>{student.emailAddress}</Table.Cell>
+                  <Table.Cell>{student.faculty}</Table.Cell>
+                  <Table.Cell>{student.indexNumber}</Table.Cell>
+                </Table.Row>
+              ))}
+          </Table.Body>
         </Table>
 
         { this.newStudentForm(fullName, emailAddress, faculty, indexNumber) }

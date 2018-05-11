@@ -30,7 +30,6 @@ class DashboardMenu extends React.Component {
     const { menuItems } = this.props;
     return (
       <Menu
-        fixed
         vertical
         pointing
         secondary
@@ -38,6 +37,7 @@ class DashboardMenu extends React.Component {
         {
           menuItems.map(path =>
             (<Menu.Item
+              key={path}
               name={path}
               active={activeItem === path}
               onClick={this.onItemClick(path)}
