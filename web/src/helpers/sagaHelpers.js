@@ -24,6 +24,13 @@ function databaseUpdatedEventChannel(dbRef) {
   return listener;
 }
 
+function createDatabaseChannels(dbRef) {
+  return {
+    createChannel: databaseCreatedEventChannel(dbRef),
+    updateChannel: databaseUpdatedEventChannel(dbRef),
+  };
+}
+
 function authenticationChannel(auth) {
   const listener = eventChannel(emit => auth.onAuthStateChanged((authUser) => {
     emit({ authUser });
@@ -34,5 +41,6 @@ function authenticationChannel(auth) {
 export {
   databaseCreatedEventChannel,
   databaseUpdatedEventChannel,
+  createDatabaseChannels,
   authenticationChannel,
 };

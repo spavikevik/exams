@@ -1,44 +1,32 @@
 import { db } from './firebase';
 
-// User API
-
-export const usersRef = db.ref('users');
 export const facultiesRef = db.ref('faculties');
 export const coursesRef = db.ref('courses');
 export const examsRef = db.ref('exams');
 export const enrollmentKeysRef = db.ref('enrollmentKeys');
 export const studentsRef = db.ref('students');
 
-// export const createUser = (id, username, email) => usersRef.child(id).set({
-//   username,
-//   email,
-// });
-
-export const createFaculty = (faculty) => {
-  facultiesRef.push({
-    ...faculty,
-  });
-};
-
-export const updateFaculty = (id, fields) => {
-  facultiesRef.child(id).update(fields);
+export const tablesRefs = {
+  courses: db.ref('courses'),
+  faculties: db.ref('faculties'),
+  exams: db.ref('exams'),
+  students: db.ref('students'),
 };
 
 export const setStudent = (id, fields) => {
   studentsRef.child(id).set(fields);
 };
 
-export const createCourse = (attrs, active = true) => {
-  coursesRef.push({
-    ...attrs,
-    active,
+export const createItem = (table, item) => {
+  const ref = tablesRefs[table];
+  ref.push({
+    ...item,
   });
 };
 
-export const createExam = (exam) => {
-  examsRef.push({
-    ...exam,
-  });
+export const updateItem = (table, id, fields) => {
+  const ref = tablesRefs[table];
+  ref.child(id).update(fields);
 };
 
 export const getCourseIdByEnrollmentKey = secretKey =>
@@ -54,11 +42,3 @@ export const enrollCourse = (studentId, enrollmentKey) => {
     .child('enrollmentKey')
     .set(enrollmentKey);
 };
-
-export const onceGetUsers = () => usersRef.once('value');
-
-export const onceGetFaculties = () => facultiesRef.once('value');
-
-export const onceGetCourses = () => coursesRef.once('value');
-
-export const onceGetExams = () => examsRef.once('value');

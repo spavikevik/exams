@@ -5,16 +5,16 @@ export function onFetchCourses(courses) {
   };
 }
 
-export function createCourse(course) {
+export function createCourse(item) {
   return {
-    type: 'CREATING_COURSE',
-    payload: { course },
+    type: 'CREATING_ITEM',
+    payload: { item, table: 'courses' },
   };
 }
 
 export function updateCourse(id, fields) {
   return {
-    type: 'UPDATING_COURSE',
-    payload: { id, fields },
+    type: 'UPDATING_ITEM',
+    payload: { id, fields, table: 'courses' },
   };
 }

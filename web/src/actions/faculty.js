@@ -5,16 +5,16 @@ export function onFetchFaculties(faculties) {
   };
 }
 
-export function createFaculty(faculty) {
+export function createFaculty(item) {
   return {
-    type: 'CREATING_FACULTY',
-    payload: { faculty },
+    type: 'CREATING_ITEM',
+    payload: { item, table: 'faculties' },
   };
 }
 
 export function updateFaculty(id, fields) {
   return {
-    type: 'UPDATING_FACULTY',
-    payload: { id, fields },
+    type: 'UPDATING_ITEM',
+    payload: { id, fields, table: 'faculties' },
   };
 }
