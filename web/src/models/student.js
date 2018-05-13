@@ -1,5 +1,6 @@
 import { Record, Map } from 'immutable';
 import Course from './course';
+import Exam from './exam';
 
 const StudentRecord = Record({
   id: null,
@@ -13,19 +14,13 @@ const StudentRecord = Record({
 
 export default class Student extends StudentRecord {
   static fromObject(key, student) {
-    const enrolledCourses = student.enrolledCourses || {};
-    Object.keys(enrolledCourses).forEach((courseKey) => {
-      if (courseKey === 'enrollmentKey') {
-        enrolledCourses[key] = undefined;
-      } else {
-        enrolledCourses[courseKey] = Course.fromObject(courseKey, enrolledCourses[courseKey]);
-      }
-    });
+    const enrolledCourses = Course.loadCourses(student.enrolledCourses || {});
+    const exams = Exam.loadExams(student.exams || {});
 
     return new this(student).merge({
       id: key,
       enrolledCourses: new Map(enrolledCourses),
-      exams: new Map(student.exams || {}),
+      exams: new Map(exams),
     });
   }
 
@@ -35,5 +30,15 @@ export default class Student extends StudentRecord {
 
   isRegisteredExam(examId) {
     return this.exams.has(examId);
+  }
+
+  setEnrolledCourses(data) {
+    const enrolledCourses = new Map(Course.loadCourses(data || {}));
+    return this.set('enrolledCourses', enrolledCourses);
+  }
+
+  setExams(data) {
+    const exams = new Map(Exam.loadExams(data || {}));
+    return this.set('exams', exams);
   }
 }

@@ -9,7 +9,7 @@ import DashboardMenu from './DashboardMenu';
 const Dashboard = (props) => {
   const { items, match } = props;
   const routes = Object.entries(items).map(([path, Component]) =>
-    (<Route key={path} exact path={`${match.path}/${path}`} component={Component} />));
+    (<Route key={path} exact path={`${match.path}/${path}`} component={() => <Component {...props} />} />));
   return (
     <Grid>
       <Grid.Row>

@@ -5,10 +5,11 @@ import { userIsAuthenticated } from '../../helpers/authHelpers';
 
 import Courses from '../../containers/Student/Courses';
 import Dashboard from '../Dashboard/Dashboard';
+import Exams from './Exams';
 
 const items = {
   [routes.COURSES]: userIsAuthenticated(Courses),
-  [routes.EXAMS]: userIsAuthenticated(Courses),
+  [routes.EXAMS]: userIsAuthenticated(Exams),
 };
 
 const StudentDashboard = props => (

@@ -4,7 +4,7 @@ import { Table, Form, Button } from 'semantic-ui-react';
 
 import Student from '../../models/student';
 
-export default class StudentCourses extends React.Component {
+export default class Courses extends React.Component {
   static propTypes = {
     authUser: PropTypes.shape({
       uid: PropTypes.string.isRequired,
@@ -38,7 +38,7 @@ export default class StudentCourses extends React.Component {
         <Table celled padded>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Course</Table.HeaderCell>
               <Table.HeaderCell>Semester</Table.HeaderCell>
               <Table.HeaderCell>Year</Table.HeaderCell>
             </Table.Row>

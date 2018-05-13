@@ -15,7 +15,7 @@ import PasswordForget from './Account/PasswordForget';
 
 import AdminDashboard from './AdminDashboard/Dashboard';
 
-import StudentDashboard from './Student/Dashboard';
+import StudentDashboard from '../containers/Student/Dashboard';
 
 import TakeExam from './Exam/TakeExam';
 

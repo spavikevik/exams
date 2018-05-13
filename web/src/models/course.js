@@ -16,6 +16,16 @@ export default class Course extends CourseRecord {
     });
   }
 
+  static loadCourses(courses) {
+    const result = {};
+    Object.keys(courses).forEach((courseKey) => {
+      if (courseKey !== 'enrollmentKey') {
+        result[courseKey] = this.fromObject(courseKey, courses[courseKey]);
+      }
+    });
+    return result;
+  }
+
   prepareForEnrollment() {
     return {
       name: this.name,

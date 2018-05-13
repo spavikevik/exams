@@ -1,5 +1,4 @@
 import { List } from 'immutable';
-import Course from '../models/course';
 import Student from '../models/student';
 
 const INITIAL_STATE = {
@@ -10,22 +9,17 @@ const INITIAL_STATE = {
 function studentReducer(state = INITIAL_STATE, action) {
   let studentIndex = -1;
   let students;
+  let updatedStudent;
   switch (action.type) {
     case 'UPDATING_STUDENT':
       if (action.key === 'enrolledCourses') {
-        const courses = Object.entries(action.data).reduce((result, [key, value]) => {
-          if (key !== 'enrollmentKey') {
-            return [
-              ...result,
-              Course.fromObject(key, value),
-            ];
-          }
-          return result;
-        }, []);
-        const student = state.student.set('enrolledCourses', new List(courses));
-        return Object.assign({}, state, { student });
+        updatedStudent = state.student.setEnrolledCourses(action.data);
+      } else if (action.key === 'exams') {
+        updatedStudent = state.student.setExams(action.data);
+      } else {
+        updatedStudent = state.student.set(action.key, action.data);
       }
-      return state;
+      return Object.assign({}, state, { student: updatedStudent });
     case 'UPDATING_STUDENTS':
       studentIndex = state.students.findIndex(student => student.id === action.key);
       if (studentIndex >= 0) {
