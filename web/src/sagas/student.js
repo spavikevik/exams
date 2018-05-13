@@ -1,4 +1,4 @@
-import { call, takeLatest, take, put, select, race } from 'redux-saga/effects';
+import { call, takeLatest, take, put, select, race, all } from 'redux-saga/effects';
 import { enrollCourse } from '../firebase/db';
 import { db } from '../firebase';
 import { databaseCreatedEventChannel, databaseUpdatedEventChannel } from '../helpers/sagaHelpers';
@@ -54,9 +54,9 @@ export function* updatedStudentsSaga() {
 }
 
 export function* watchStudentSaga() {
-  yield [
+  yield all([
     takeLatest('CREATING_STUDENT', registerStudentSaga),
     takeLatest('ENROLLING_STUDENT_COURSE', enrollStudentToCourse),
     takeLatest('SETTING_AUTH_USER', updatedStudentSaga),
-  ];
+  ]);
 }

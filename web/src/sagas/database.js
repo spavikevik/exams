@@ -23,10 +23,10 @@ function* updateItemSaga(action) {
 }
 
 export function* watchItemSaga() {
-  yield [
+  yield all([
     takeLatest('CREATING_ITEM', createItemSaga),
     takeLatest('UPDATING_ITEM', updateItemSaga),
-  ];
+  ]);
 }
 
 export function* updatedItemSaga() {
