@@ -1,8 +1,8 @@
-import { List } from 'immutable';
+import { Map } from 'immutable';
 import Exam from '../models/exam';
 
 const INITIAL_STATE = {
-  exams: new List(),
+  exams: new Map(),
 };
 
 
@@ -13,7 +13,7 @@ function examReducer(state = INITIAL_STATE, action) {
         {},
         state,
         {
-          exams: state.exams.push(Exam.fromObject(action.key, action.item)),
+          exams: state.exams.set(action.key, Exam.fromObject(action.key, action.item)),
         },
       );
     default:

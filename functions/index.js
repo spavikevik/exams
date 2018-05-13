@@ -2,13 +2,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
 exports.registerExamWithCourse = functions.database.ref('/exams/{pushId}').onCreate((event) => {
   const values = event.data.val();
   const { pushId } = event.params;
@@ -55,9 +48,9 @@ exports.enrollCourse = functions.database.ref('/students/{studentId}').onWrite((
     }).then((courseId) => {
       return Promise.all([admin.database().ref(`/courses/${courseId}`).once('value'), courseId])
     }).then(([snapshot, courseId]) => {
-      const course = snapshot.val();
-      return admin.database().ref(`students/${studentId}/enrolledCourses`).update({
-        [courseId]: course,
+      const { code, name, semester, year } = snapshot.val();
+      return admin.database().ref(`/students/${studentId}/enrolledCourses`).update({
+        [courseId]: { code, name, semester, year },
         enrollmentKey: false
       })
     }).catch(error => { console.log(error) });
@@ -91,5 +84,41 @@ exports.registerStudent = functions.https.onCall((data, context) => {
       });
     });
   }
+  console.log('Permission denied for uid: ', context.auth.uid);
+  return false;
+});
+
+exports.registerExamStudent = functions.https.onCall((data, context) => {
+  const {
+    examId,
+    studentId,
+    toggle,
+  } = data;
+
+  const { accessLevel } = context.auth.token || {};
+  if (context.auth.token.admin && accessLevel === 9) {
+    console.log(`(Un)registering student ${studentId} for exam: ${examId}`);
+    console.log('Toggle: ', toggle);
+    return admin.database().ref(`/exams/${examId}`).once('value').then((snapshot) => {
+      const {
+        name,
+        date,
+        duration
+      } = snapshot.val();
+      const updatedExamData = {};
+      let studentExamData = {}
+      updatedExamData[`exams/${examId}/registeredStudents/${studentId}`] = toggle;
+      if (toggle) {
+        studentExamData = {
+          name,
+          date,
+          duration,
+        };
+      }
+      updatedExamData[`students/${studentId}/exams/${examId}`] = studentExamData;
+      return admin.database().ref('/').update(updatedExamData);
+    }).catch(error => console.log(error));
+  }
+  console.log('Permission denied for uid: ', context.auth.uid);
   return false;
 });

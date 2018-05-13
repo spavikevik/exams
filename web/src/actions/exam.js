@@ -11,3 +11,10 @@ export function updateExam(id, fields) {
     payload: { id, fields, table: 'exams' },
   };
 }
+
+export function toggleRegisterStudentForExam(examId, studentId, toggle) {
+  return {
+    type: 'REGISTERING_STUDENT_FOR_EXAM',
+    payload: { examId, studentId, toggle },
+  };
+}

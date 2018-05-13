@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Table, Modal, Icon } from 'semantic-ui-react';
-import { List } from 'immutable';
+import { Map, List } from 'immutable';
 import CreateExam from '../../../containers/AdminDashboard/Exams/CreateExam/CreateExam';
+import RegisterStudents from './RegisterStudents';
 
 export default class Exams extends React.Component {
   static propTypes = {
-    exams: PropTypes.instanceOf(List).isRequired,
+    exams: PropTypes.instanceOf(Map).isRequired,
+    students: PropTypes.instanceOf(List).isRequired,
+    toggleRegisterStudentForExam: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -66,14 +69,37 @@ export default class Exams extends React.Component {
     );
   }
 
+  registerStudents(exam) {
+    const eligibleStudents = this.props.students
+      .filter(student => student.isEnrolledCourse(exam.course));
+    const { toggleRegisterStudentForExam } = this.props;
+    return (
+      <Modal trigger={<Button basic icon="edit" color="green" />} closeIcon>
+        <Modal.Header>Registered students for {exam.name}</Modal.Header>
+        <Modal.Content>
+          <RegisterStudents
+            examId={exam.id}
+            students={eligibleStudents}
+            toggleRegisterStudentForExam={toggleRegisterStudentForExam}
+          />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button primary>
+            Save
+          </Button>
+        </Modal.Actions>
+      </Modal>
+    );
+  }
+
   render() {
     const { exams } = this.props;
     return (
-      <div>
+      <React.Fragment>
         <Table celled padded>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Course</Table.HeaderCell>
+              <Table.HeaderCell>Exam</Table.HeaderCell>
               <Table.HeaderCell>Date</Table.HeaderCell>
               <Table.HeaderCell>Duration</Table.HeaderCell>
               <Table.HeaderCell>Questions</Table.HeaderCell>
@@ -82,19 +108,15 @@ export default class Exams extends React.Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {(exams).map(exam =>
+            {exams.valueSeq().map(exam =>
               (
                 <Table.Row key={exam.id}>
-                  <Table.Cell>{exam.course}</Table.Cell>
+                  <Table.Cell>{exam.name}</Table.Cell>
                   <Table.Cell>{exam.date}</Table.Cell>
+                  <Table.Cell>{exam.duration}</Table.Cell>
+                  <Table.Cell>{exam.questions.length}</Table.Cell>
                   <Table.Cell>
-                    {exam.duration}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {exam.questions.length}
-                  </Table.Cell>
-                  <Table.Cell>
-                    0 <Button basic icon="edit" color="green" />
+                    { this.registerStudents(exam) }
                   </Table.Cell>
                   <Table.Cell>
                     <Button basic icon="eye" />
@@ -104,7 +126,7 @@ export default class Exams extends React.Component {
           </Table.Body>
         </Table>
         { this.newExam() }
-      </div>
+      </React.Fragment>
     );
   }
 }

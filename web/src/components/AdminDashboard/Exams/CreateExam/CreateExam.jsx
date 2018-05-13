@@ -24,6 +24,7 @@ class CreateExam extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       type: '',
       date: '',
       course: '',
@@ -119,6 +120,10 @@ class CreateExam extends React.Component {
 
   handleChange(e, { name, value }) {
     this.setState({ [name]: value });
+    if (name === 'course') {
+      const course = this.props.courses.find(c => c.id === value);
+      this.setState({ name: course.name });
+    }
   }
 
   handleDaySelection(date) {

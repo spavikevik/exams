@@ -44,7 +44,7 @@ export default class StudentCourses extends React.Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {student.enrolledCourses.map(course =>
+            {student.enrolledCourses.valueSeq().map(course =>
               (
                 <Table.Row key={course.id}>
                   <Table.Cell>{course.name}</Table.Cell>

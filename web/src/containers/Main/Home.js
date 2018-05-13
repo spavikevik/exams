@@ -6,8 +6,6 @@ const mapStateToProps = state => ({
   users: state.userState.users,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSetUsers: users => dispatch({ type: 'USERS_SET', users }),
-});
+const mapDispatchToProps = () => {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -75,7 +75,7 @@ export default class Faculties extends React.Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {(faculties).map(faculty =>
+            {faculties.map(faculty =>
               (
                 <Table.Row key={faculty.id}>
                   <Table.Cell>{faculty.name}</Table.Cell>
