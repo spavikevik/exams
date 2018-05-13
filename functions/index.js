@@ -103,18 +103,22 @@ exports.registerExamStudent = functions.https.onCall((data, context) => {
       const {
         name,
         date,
-        duration
+        duration,
+        type,
       } = snapshot.val();
       const updatedExamData = {};
-      let studentExamData = {}
-      updatedExamData[`exams/${examId}/registeredStudents/${studentId}`] = toggle;
+      let studentExamData = {};
+      let examStudentData = {};
       if (toggle) {
         studentExamData = {
           name,
           date,
           duration,
+          type,
         };
+        examStudentData = toggle;
       }
+      updatedExamData[`exams/${examId}/registeredStudents/${studentId}`] = examStudentData;
       updatedExamData[`students/${studentId}/exams/${examId}`] = studentExamData;
       return admin.database().ref('/').update(updatedExamData);
     }).catch(error => console.log(error));
